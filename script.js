@@ -21,6 +21,27 @@ var questions = {
     multipleChoice6: ['var shapes = circle” square"','var shapes = {circle, square)','var shapes = ("circle", "squares")','var shapes = ["circle", "squares"']
 }
 
+function start_timer (event) {
+    var start_button = document.getElementById("start_button")
+    start_button.classList.add("hide")
+
+    //show timer after start button is clicked
+    var showTimer = document.getElementById("timer")
+    console.log(showTimer)
+    showTimer.classList.remove("hide")
+
+    //need to remove the hide on "question" and "score-section"
+    var questionClass = document.getElementById("questions")
+    questionClass.classList.remove("hide")
+
+    var scoreSectionClass = document.getElementById("score-section")
+    questionClass.classList.remove("hide")
+}
+
+
+document.getElementById("start_button").addEventListener("click", start_timer )
+
+
 
 var questionHeader = document.createElement("h2")
 
