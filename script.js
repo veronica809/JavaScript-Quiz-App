@@ -34,7 +34,13 @@ var questions =
         }
     ]
 
+    var currentQuestion = 0
 
+    //makes start button "clickable"
+document.getElementById("start_button").addEventListener("click", start_timer )
+
+
+//start_timer function hides begin quiz button, initiates timer, and shows questions after start button clicked
 function start_timer (event) {
     var start_button = document.getElementById("start_button")
     start_button.classList.add("hide")
@@ -53,10 +59,10 @@ function start_timer (event) {
 
 }
 
-document.getElementById("start_button").addEventListener("click", start_timer )
 
 
 
+//function that elicits questions and answer list
 function questionHandler(questionNumber){
 
     var questionHeader = document.createElement("h2")
@@ -79,12 +85,41 @@ function questionHandler(questionNumber){
     for (let i = 0; i < questions[questionNumber].multipleChoice.length; i++) {
 
         var answerLi = document.createElement("li")
+        answerLi.classList.add("answer-clicked")
+        answerLi.addEventListener("click", answerHandler)
+        answerLi.setAttribute("ans", questions[questionNumber].multipleChoice[i] )
+        answerLi.setAttribute("q",i)
         var answerText = document.createTextNode(questions[questionNumber].multipleChoice[i])
         answerLi.appendChild(answerText)
         answerUl.appendChild(answerLi)
     }
-
+    //var answerButtons= document.createElement("answer-buttons").addEventListener("click")
+    //var selectAnswer = document.createElement("button")
+    //selectAnswer.innerText = answerUl.text
     htmlQuestions.appendChild(answerUl)
 
+
 }
+
+function answerHandler () {
+    console.log(this.getAttribute("ans"))
+
+    var selectedAnswer = this.getAttribute("ans")
+    // var questionNumber = this.getAttribute("q")
+    
+
+    console.log(questions[currentQuestion].answer)
+
+    if (selectedAnswer == questions[currentQuestion].answer){
+
+        console.log ("Got it right dude!")
+    }
+    else {
+        console.log("Better luck next time")
+    }
+
+}
+
+
+
 
