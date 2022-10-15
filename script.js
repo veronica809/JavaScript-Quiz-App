@@ -133,32 +133,70 @@ function answerHandler() {
   }
 }
 
+
 var timerEl = document.getElementById("timer")
+  
+var timeLeft = 120;
+// var time = timeLeft * 60;
+var minutes = 1
+var seconds = 59
+
+
 
 //timer function
 function countDown() {
-  var timeLeft = 120;
-  // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
-  var timeInterval = setInterval(function () {
-    // As long as the `timeLeft` is greater than 1
-    if (timeLeft > 1) {
-      // Set the `textContent` of `timerEl` to show the remaining seconds
-      timerEl.textContent = timeLeft + ' seconds remaining';
-      // Decrement `timeLeft` by 1
-      timeLeft--;
-    } else if (timeLeft === 1) {
-      // When `timeLeft` is equal to 1, rename to 'second' instead of 'seconds'
-      timerEl.textContent = timeLeft + ' second remaining';
-      timeLeft--;
-    } else {
-      // Once `timeLeft` gets to 0, game over
-      timerEl.textContent = '';
-      // Use `clearInterval()` to stop the timer
-      clearInterval(timeInterval);
-      // Call the `displayMessage()` function
-      displayMessage();
+// Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
+var timeInterval = setInterval(function () {
+
+  if (timeLeft > 60){
+
+    if (timeLeft < 71){
+      timerEl.textContent = minutes + ':0' + seconds;
     }
-  }, 1000);
+    else{
+    // Set the `textContent` of `timerEl` to show the remaining seconds
+    timerEl.textContent = minutes + ':' + seconds;
+    }
+    // Decrement `timeLeft` by 1
+    timeLeft--;
+    seconds--;
+
+  }
+  else if (timeLeft == 60){
+    seconds = '00';
+    timerEl.textContent = minutes + ':' + seconds;
+    timeLeft--;
+    seconds--;
+  }
+  else if (timeLeft == 59){
+    seconds = 59
+    minutes = '00'
+    timerEl.textContent = minutes + ':' + seconds;
+    timeLeft--;
+    seconds--;
+  }
+  else if (timeLeft < 59 && timeLeft >=1){
+    if (timeLeft < 10) {
+      timerEl.textContent = minutes + ':0' + seconds;
+    }
+    else{
+      timerEl.textContent = minutes + ':' + seconds;
+    }
+    // Decrement `timeLeft` by 1
+    timeLeft--;
+    seconds--;
+
+  }
+
+  else {
+    // Once `timeLeft` gets to 0, game over
+    timerEl.textContent = '';
+    // Use `clearInterval()` to stop the timer
+    clearInterval(timeInterval);
+    // Call the `displayMessage()` function
+    // displayMessage();
+  }
+}, 1000);
 }
 
 countDown();
