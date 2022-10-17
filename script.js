@@ -62,6 +62,7 @@ var currentQuestion = 0;
 
 //makes start button "clickable"
 document.getElementById("start_button").addEventListener("click", start_timer);
+document.getElementById("start_button").addEventListener("click", countDown);
 
 //start_timer function hides begin quiz button, initiates timer, and shows questions after start button clicked
 function start_timer(event) {
@@ -199,4 +200,4 @@ var timeInterval = setInterval(function () {
 }, 1000);
 }
 
-countDown();
+
