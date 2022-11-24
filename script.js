@@ -61,29 +61,31 @@ var questions = [
 var currentQuestion = 0;
 
 //makes start button "clickable"
-document.getElementById("start_button").addEventListener("click", start_timer);
-document.getElementById("start_button").addEventListener("click", countDown);
+document.getElementById("start_button").addEventListener("click", startQuiz);
 
 //start_timer function hides begin quiz button, initiates timer, and shows questions after start button clicked
-function start_timer(event) {
+function startQuiz(event) {
   var start_button = document.getElementById("start_button");
-  start_button.classList.add("hide");
+  start_button.style.display = "none";
 
   //show timer after start button is clicked
   var showTimer = document.getElementById("timer");
   showTimer.classList.remove("hide");
 
   //need to remove the hide on "question" and "score-section"
-  var questionClass = document.getElementById("questions");
-  questionClass.classList.remove("hide");
+  var questionElement = document.getElementById("questions");
+  questionElement.classList.remove("hide");
 
   var scoreSectionClass = document.getElementById("score-section");
-  questionClass.classList.remove("hide");
+  questionElement.classList.remove("hide");
   questionHandler(0);
+  startTimer();
 }
 
 //function that elicits questions and answer list
 function questionHandler(questionNumber) {
+  var htmlQuestions = document.getElementById("questions");
+  htmlQuestions.innerHTML = "";
   var questionHeader = document.createElement("h2");
   //create the text you want to add to the h2 element we created above:
   var questionText = document.createTextNode(questions[questionNumber].q);
@@ -93,8 +95,6 @@ function questionHandler(questionNumber) {
 
   // save the class name "questions" that we created in the HTML file
   //We save this into a variable so we can then append the html element from above
-
-  var htmlQuestions = document.getElementById("questions");
 
   //here we use the variable where we save the div containing the question class and "append" the element we created
   htmlQuestions.appendChild(questionHeader);
@@ -127,77 +127,67 @@ function answerHandler() {
 
   console.log(questions[currentQuestion].answer);
 
-  if (selectedAnswer == questions[currentQuestion].answer) {
+  if (selectedAnswer === questions[currentQuestion].answer) {
     console.log("Got it right dude!");
   } else {
     console.log("Better luck next time");
   }
+  if (currentQuestion < questions.length) {
+    currentQuestion++;
+    questionHandler(currentQuestion);
+  } else {
+    console.log("Game Over");
+  }
 }
 
+var timerEl = document.getElementById("timer");
 
-var timerEl = document.getElementById("timer")
-  
 var timeLeft = 120;
 // var time = timeLeft * 60;
-var minutes = 1
-var seconds = 59
-
-
+var minutes = 1;
+var seconds = 59;
 
 //timer function
-function countDown() {
-// Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
-var timeInterval = setInterval(function () {
-
-  if (timeLeft > 60){
-
-    if (timeLeft < 71){
-      timerEl.textContent = minutes + ':0' + seconds;
+function startTimer() {
+  // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
+  var timeInterval = setInterval(function () {
+    if (timeLeft > 60) {
+      if (timeLeft < 71) {
+        timerEl.textContent = minutes + ":0" + seconds;
+      } else {
+        // Set the `textContent` of `timerEl` to show the remaining seconds
+        timerEl.textContent = minutes + ":" + seconds;
+      }
+      // Decrement `timeLeft` by 1
+      timeLeft--;
+      seconds--;
+    } else if (timeLeft == 60) {
+      seconds = "00";
+      timerEl.textContent = minutes + ":" + seconds;
+      timeLeft--;
+      seconds--;
+    } else if (timeLeft == 59) {
+      seconds = 59;
+      minutes = "00";
+      timerEl.textContent = minutes + ":" + seconds;
+      timeLeft--;
+      seconds--;
+    } else if (timeLeft < 59 && timeLeft >= 1) {
+      if (timeLeft < 10) {
+        timerEl.textContent = minutes + ":0" + seconds;
+      } else {
+        timerEl.textContent = minutes + ":" + seconds;
+      }
+      // Decrement `timeLeft` by 1
+      timeLeft--;
+      seconds--;
+    } else {
+      // Once `timeLeft` gets to 0, game over
+      timerEl.textContent = "";
+      // Use `clearInterval()` to stop the timer
+      clearInterval(timeInterval);
+      // Call the `displayMessage()` function
+      // displayMessage();
     }
-    else{
-    // Set the `textContent` of `timerEl` to show the remaining seconds
-    timerEl.textContent = minutes + ':' + seconds;
-    }
-    // Decrement `timeLeft` by 1
-    timeLeft--;
-    seconds--;
-
-  }
-  else if (timeLeft == 60){
-    seconds = '00';
-    timerEl.textContent = minutes + ':' + seconds;
-    timeLeft--;
-    seconds--;
-  }
-  else if (timeLeft == 59){
-    seconds = 59
-    minutes = '00'
-    timerEl.textContent = minutes + ':' + seconds;
-    timeLeft--;
-    seconds--;
-  }
-  else if (timeLeft < 59 && timeLeft >=1){
-    if (timeLeft < 10) {
-      timerEl.textContent = minutes + ':0' + seconds;
-    }
-    else{
-      timerEl.textContent = minutes + ':' + seconds;
-    }
-    // Decrement `timeLeft` by 1
-    timeLeft--;
-    seconds--;
-
-  }
-
-  else {
-    // Once `timeLeft` gets to 0, game over
-    timerEl.textContent = '';
-    // Use `clearInterval()` to stop the timer
-    clearInterval(timeInterval);
-    // Call the `displayMessage()` function
-    // displayMessage();
-  }
-}, 1000);
+  }, 1000);
 }
-
-
